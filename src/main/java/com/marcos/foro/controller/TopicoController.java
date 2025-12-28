@@ -6,6 +6,7 @@ import com.marcos.foro.models.usuario.Usuario;
 import com.marcos.foro.repositories.CursoRepository;
 import com.marcos.foro.repositories.TopicoRepository;
 import com.marcos.foro.repositories.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/foro")
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
 
     @Autowired
