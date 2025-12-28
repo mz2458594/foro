@@ -4,6 +4,7 @@ import com.marcos.foro.models.curso.Curso;
 import com.marcos.foro.models.respuesta.Respuesta;
 import com.marcos.foro.models.usuario.Usuario;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -54,4 +55,27 @@ public class Topico {
         this.autor = usuario;
         this.curso = curso;
     }
+
+    public void actualizar(@Valid DatosActualizarTopico datos, Usuario autor, Curso curso) {
+        if (datos.titulo() != null){
+            this.titulo = datos.titulo();
+        }
+
+        if (datos.mensaje() != null){
+            this.mensaje = datos.mensaje();
+        }
+
+        if (autor != null){
+            this.autor = autor;
+        }
+
+        if (curso != null){
+            this.curso = curso;
+        }
+    }
+
+    public void eliminar(){
+        this.estado = false;
+    }
+
 }

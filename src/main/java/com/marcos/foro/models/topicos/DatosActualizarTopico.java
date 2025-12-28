@@ -1,4 +1,11 @@
 package com.marcos.foro.models.topicos;
 
-public record DatosActualizarTopico() {
+import jakarta.validation.constraints.NotNull;
+
+public record DatosActualizarTopico(
+        String titulo,
+        String mensaje,
+        Long id_autor,
+        Long id_curso
+) {
 }

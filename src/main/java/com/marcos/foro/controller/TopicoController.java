@@ -1,13 +1,13 @@
 package com.marcos.foro.controller;
 
-import com.marcos.foro.models.topicos.DatosListaTopicos;
+import com.marcos.foro.models.curso.Curso;
+import com.marcos.foro.models.topicos.*;
+import com.marcos.foro.models.usuario.Usuario;
 import com.marcos.foro.repositories.CursoRepository;
 import com.marcos.foro.repositories.TopicoRepository;
-import com.marcos.foro.models.topicos.DatosDetalleTopico;
-import com.marcos.foro.models.topicos.DatosRegistroTopico;
-import com.marcos.foro.models.topicos.Topico;
 import com.marcos.foro.repositories.UsuarioRepository;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +38,7 @@ public class TopicoController {
             sort = {"fecha"},
             direction = Sort.Direction.ASC
     )Pageable pageable){
-        var topics = topicoRepository.findAll(pageable)
+        var topics = topicoRepository.findAllByEstadoTrue(pageable)
                 .map(DatosListaTopicos::new);
 
         return ResponseEntity.ok(topics);
@@ -61,6 +61,34 @@ public class TopicoController {
         var topico = topicoRepository.save(new Topico(datos, usuario, curso));
         var uri = uriComponentsBuilder.path("/foro/{id}").buildAndExpand(topico.getId()).toUri();
         return ResponseEntity.created(uri).body(new DatosDetalleTopico(topico));
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity actualizarTopico(@RequestBody @Valid DatosActualizarTopico datos, @PathVariable Long id){
+        var topico = topicoRepository.getReferenceById(id);
+
+        Usuario autor = null;
+        Curso curso = null;
+
+        if (datos.id_autor() != null){
+            autor = usuarioRepository.getReferenceById(datos.id_autor());
+        }
+
+        if (datos.id_curso() != null){
+            curso = cursoRepository.getReferenceById(datos.id_curso());
+        }
+
+        topico.actualizar(datos, autor, curso);
+        return ResponseEntity.ok(new DatosDetalleTopico(topico));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity eliminarTopico(@PathVariable Long id){
+        var topico = topicoRepository.getReferenceById(id);
+        topico.eliminar();
+        return ResponseEntity.noContent().build();
     }
 
 }
