@@ -7,6 +7,7 @@ import com.marcos.foro.models.respuesta.Respuesta;
 import com.marcos.foro.repositories.RespuestaRepository;
 import com.marcos.foro.repositories.TopicoRepository;
 import com.marcos.foro.repositories.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/respuesta")
+@SecurityRequirement(name = "bearer-key")
 public class RespuestasController {
 
     @Autowired
