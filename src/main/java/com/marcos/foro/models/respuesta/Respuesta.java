@@ -3,6 +3,7 @@ package com.marcos.foro.models.respuesta;
 import com.marcos.foro.models.topicos.Topico;
 import com.marcos.foro.models.usuario.Usuario;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -36,5 +37,11 @@ public class Respuesta {
     private Usuario usuario;
 
 
-
+    public Respuesta(DatosRegistroRespuesta datos, Topico topico, Usuario usuario) {
+        this.mensaje = datos.mensaje();
+        this.fechaCreacion = datos.fechaCreacion();
+        this.solucion = datos.solucion();
+        this.topico = topico;
+        this.usuario = usuario;
+    }
 }
